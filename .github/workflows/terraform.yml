@@ -1,0 +1,52 @@
+name: terraform
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  tf_version: 1.9.8
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.tf_version }}
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.56.0
+
+      - name: Terraform fmt check
+        run: terraform fmt -check -recursive
+
+      - name: TFLint
+        run: tflint --recursive
+
+  inits:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.tf_version }}
+
+      - name: Terraform init all examples
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for dir in examples/*/; do
+            [ -d "$dir" ] || continue
+            terraform -chdir="${dir%/}" init -backend=false
+          done
