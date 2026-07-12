@@ -19,22 +19,16 @@ inputs = {
   defaults = {
     namespace       = "default"
     service_account = "datafy-controller-sa"
-    permissions = [
-      {
-        actions   = ["s3:GetObject"]
-        resources = ["arn:aws:s3:::my-bucket/*"]
-      }
-    ]
   }
 
   items = {
-    with-cluster = {
+    controller = {
       name         = "datafy-irsa-cluster"
       cluster_name = "my-eks-cluster"
     }
-    with-arn = {
-      name              = "datafy-irsa-arn"
-      oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/EXAMPLE"
+    another = {
+      name         = "datafy-irsa-other"
+      cluster_name = "my-other-eks-cluster"
     }
   }
 }
@@ -49,22 +43,16 @@ module "wrapper" {
   defaults = {
     namespace       = "default"
     service_account = "datafy-controller-sa"
-    permissions = [
-      {
-        actions   = ["s3:GetObject"]
-        resources = ["arn:aws:s3:::my-bucket/*"]
-      }
-    ]
   }
 
   items = {
-    with-cluster = {
+    controller = {
       name         = "datafy-irsa-cluster"
       cluster_name = "my-eks-cluster"
     }
-    with-arn = {
-      name              = "datafy-irsa-arn"
-      oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/EXAMPLE"
+    another = {
+      name         = "datafy-irsa-other"
+      cluster_name = "my-other-eks-cluster"
     }
   }
 }
