@@ -3,7 +3,7 @@ terraform {
 }
 
 module "irsa" {
-  source = "../../modules/iam-role-for-datafy-controller-eks"
+  source = "../../../aws/iam-role-for-datafy-controller-eks"
 
   name            = "eks-datafy-controller-role-cluster"
   cluster_name    = "my-eks-cluster"

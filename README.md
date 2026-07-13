@@ -1,13 +1,14 @@
-# Datafy AWS Terraform Modules
+# Datafy Terraform Modules
 
-A collection of Terraform modules, wrappers, and examples for the AWS
-infrastructure Datafy provisions. This currently covers IAM roles, and
-will grow to include other AWS modules Datafy creates over time.
+A collection of Terraform modules, wrappers, and examples for the cloud
+infrastructure Datafy provisions. Modules are organized by cloud provider
+(`aws/`, `gcp/`, `azure/`). Today only `aws/` is populated (currently IAM
+roles) and will grow to include other modules Datafy creates over time.
 
 ## Examples
 
-- [examples/iam-role](./examples/iam-role)
-- [examples/iam-role-for-datafy-controller-eks](./examples/iam-role-for-datafy-controller-eks)
+- [examples/aws/iam-role](./examples/aws/iam-role)
+- [examples/aws/iam-role-for-datafy-controller-eks](./examples/aws/iam-role-for-datafy-controller-eks)
 
 ## License
 

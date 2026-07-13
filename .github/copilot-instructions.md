@@ -9,10 +9,11 @@ For repo-specific wrapper/example completion guidance, also see:
 
 When reviewing Terraform changes in this repo, validate at minimum:
 
-1. Any new module under `modules/<name>` has:
+1. Any new module under `<cloud>/<name>` (where `<cloud>` is `aws`,
+   `gcp`, or `azure`) has:
    - required module files
-   - matching wrapper at `wrappers/<name>`
-   - matching example at `examples/<name>`
+   - matching wrapper at `wrappers/<cloud>/<name>`
+   - matching example at `examples/<cloud>/<name>`
 2. README files match the current module interface and file paths.
 3. Wrapper and example `source` paths are correct.
 4. All supported input modes are represented in examples when relevant.

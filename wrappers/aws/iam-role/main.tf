@@ -1,5 +1,5 @@
 module "wrapper" {
-  source   = "../../modules/iam-role"
+  source   = "../../../aws/iam-role"
   for_each = var.items
 
   account_id        = try(each.value.account_id, var.defaults.account_id)

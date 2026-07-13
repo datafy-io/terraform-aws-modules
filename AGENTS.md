@@ -1,8 +1,20 @@
 # Repo Instructions
 
 This repository contains Terraform modules, wrappers, and examples for
-the AWS infrastructure Datafy provisions. It currently covers IAM roles,
-and will grow to include other AWS modules Datafy creates over time.
+the cloud infrastructure Datafy provisions. It is organized by cloud
+provider: `aws/`, `gcp/`, and `azure/`. Today only `aws/` is populated
+(currently IAM roles) and will grow to include other modules Datafy
+creates over time; `gcp/` and `azure/` are placeholders for future work.
+
+## Repository Structure
+
+Everything is scoped by cloud provider (`<cloud>` is one of `aws`, `gcp`,
+`azure`):
+
+- Modules live at the repo root under `<cloud>/<name>`
+  (e.g. `aws/iam-role`).
+- Wrappers live under `wrappers/<cloud>/<name>`.
+- Examples live under `examples/<cloud>/<name>`.
 
 ## Source of Truth
 
@@ -14,7 +26,7 @@ source of truth and keep the other file aligned with it.
 
 ## Repository Contract
 
-When a developer adds a new module under `modules/<name>`, review for all
+When a developer adds a new module under `<cloud>/<name>`, review for all
 of the following:
 
 1. Required module files exist:
@@ -23,8 +35,8 @@ of the following:
    - `outputs.tf`
    - `versions.tf`
    - `README.md`
-2. A matching wrapper exists at `wrappers/<name>`.
-3. A matching example exists at `examples/<name>`.
+2. A matching wrapper exists at `wrappers/<cloud>/<name>`.
+3. A matching example exists at `examples/<cloud>/<name>`.
 4. Module, wrapper, example, and root README paths are consistent after
    any rename.
 5. `terraform fmt -recursive` is clean.
@@ -35,10 +47,10 @@ of the following:
 
 ## Wrapper Rules
 
-For each module wrapper under `wrappers/<name>`:
+For each module wrapper under `wrappers/<cloud>/<name>`:
 
 1. The wrapper name must match the module name exactly.
-2. The wrapper must source `../../modules/<name>`.
+2. The wrapper must source `../../../<cloud>/<name>`.
 3. The wrapper format and style should follow the closest existing
    wrapper already present in this repository.
 4. The wrapper must expose:
@@ -57,9 +69,9 @@ For each module wrapper under `wrappers/<name>`:
 
 ## Example Rules
 
-For each example under `examples/<name>`:
+For each example under `examples/<cloud>/<name>`:
 
-1. The example must source `../../modules/<name>`.
+1. The example must source `../../../<cloud>/<name>`.
 2. The example format and style should follow the closest existing
    example already present in this repository.
 3. The example must demonstrate all important supported input modes for
@@ -106,11 +118,11 @@ Use these commands when checking repo consistency:
 
 ```bash
 terraform fmt -recursive
-terraform -chdir=examples/iam-role init -backend=false
-terraform -chdir=examples/iam-role validate
-terraform -chdir=examples/iam-role-for-datafy-controller-eks init -backend=false
-terraform -chdir=examples/iam-role-for-datafy-controller-eks validate
+terraform -chdir=examples/aws/iam-role init -backend=false
+terraform -chdir=examples/aws/iam-role validate
+terraform -chdir=examples/aws/iam-role-for-datafy-controller-eks init -backend=false
+terraform -chdir=examples/aws/iam-role-for-datafy-controller-eks validate
 ```
 
-If more examples are added, extend validation to each `examples/*`
-subdirectory.
+If more examples are added, extend validation to each
+`examples/<cloud>/*` subdirectory.

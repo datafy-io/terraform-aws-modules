@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 module "datafy_role_global" {
-  source = "../../modules/iam-role"
+  source = "../../../aws/iam-role"
 
   account_id        = "123e4567-e89b-12d3-a456-426614174000"
   permissions_level = "AutoScaler"
@@ -22,7 +22,7 @@ module "datafy_role_global" {
 }
 
 module "datafy_role_regional" {
-  source = "../../modules/iam-role"
+  source = "../../../aws/iam-role"
 
   account_id        = "123e4567-e89b-12d3-a456-426614174001"
   permissions_level = "AutoScaler"

@@ -1,5 +1,5 @@
 module "wrapper" {
-  source   = "../../modules/iam-role-for-datafy-controller-eks"
+  source   = "../../../aws/iam-role-for-datafy-controller-eks"
   for_each = var.items
 
   name            = try(each.value.name, var.defaults.name)
