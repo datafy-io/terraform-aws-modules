@@ -12,8 +12,6 @@ service account.
 
 The module resolves the OIDC provider from `cluster_name`.
 
-See [examples/iam-role-for-datafy-controller-eks](../../examples/iam-role-for-datafy-controller-eks) for a usage example.
-
 ## Usage
 
 ```hcl
