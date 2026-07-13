@@ -6,6 +6,7 @@ It intentionally exposes only these inputs:
 - `cluster_name`
 - `datafy_controller_namespace`
 - `datafy_controller_service_account_name`
+- `tags`
 
 It creates the IRSA trust relationship for the specified Kubernetes
 service account.

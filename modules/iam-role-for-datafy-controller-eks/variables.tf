@@ -38,3 +38,9 @@ variable "datafy_controller_service_account_name" {
     error_message = "datafy_controller_service_account_name must not be empty."
   }
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "A map of tags to assign to created resources."
+  default     = {}
+}
