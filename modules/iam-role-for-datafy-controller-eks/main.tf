@@ -12,15 +12,14 @@ locals {
   role_version = try(
     [
       for m in lookup(jsondecode(file("${path.root}/.terraform/modules/modules.json")), "Modules", []) :
-      "v${m.Version}" if try(startswith(m.Source, "registry.terraform.io/datafy-io/terraform-aws-modules/iam-role-for-datafy-controller-eks"), false) && can(m.Version)
+      "v${m.Version}" if try(startswith(m.Source, "registry.terraform.io/datafy-io/modules/aws//modules/iam-role-for-datafy-controller-eks"), false) && can(m.Version)
     ][0],
     ""
   )
 }
 
 resource "aws_iam_role" "this" {
-  name = var.role_name
-  tags = var.tags
+  name = coalesce(var.role_name, "${var.cluster_name}-datafy-controller-role")
   tags = merge(
     {
       "datafy:role:version" = local.role_version

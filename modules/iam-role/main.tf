@@ -8,7 +8,7 @@ locals {
   role_version = try(
     [
       for m in lookup(jsondecode(file("${path.root}/.terraform/modules/modules.json")), "Modules", []) :
-      "v${m.Version}" if try(startswith(m.Source, "registry.terraform.io/datafy-io/terraform-aws-modules/iam-role"), false) && can(m.Version)
+      "v${m.Version}" if try(startswith(m.Source, "registry.terraform.io/datafy-io/modules/aws//modules/iam-role"), false) && can(m.Version)
     ][0],
     ""
   )

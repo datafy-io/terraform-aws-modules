@@ -1,9 +1,10 @@
 variable "role_name" {
   type        = string
-  description = "IAM role name to create for the Kubernetes service account."
+  default     = null
+  description = "IAM role name to create for the Kubernetes service account. Defaults to \"<cluster_name>-datafy-controller-role\"."
 
   validation {
-    condition     = length(var.role_name) > 0
+    condition     = var.role_name == null || length(coalesce(var.role_name, " ")) > 0
     error_message = "role_name must not be empty."
   }
 }
