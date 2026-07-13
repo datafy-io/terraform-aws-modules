@@ -12,7 +12,7 @@ locals {
 }
 
 resource "aws_iam_role" "this" {
-  name = var.name
+  name = var.role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -26,7 +26,7 @@ resource "aws_iam_role" "this" {
         Condition = {
           StringEquals = {
             "${local.oidc_provider_url}:aud" = "sts.amazonaws.com"
-            "${local.oidc_provider_url}:sub" = "system:serviceaccount:${var.namespace}:${var.service_account}"
+            "${local.oidc_provider_url}:sub" = "system:serviceaccount:${var.datafy_controller_namespace}:${var.datafy_controller_service_account_name}"
           }
         }
       }

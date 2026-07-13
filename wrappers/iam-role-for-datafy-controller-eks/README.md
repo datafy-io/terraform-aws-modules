@@ -17,17 +17,17 @@ terraform {
 
 inputs = {
   defaults = {
-    namespace       = "default"
-    service_account = "datafy-controller-sa"
+    datafy_controller_namespace            = "default"
+    datafy_controller_service_account_name = "datafy-controller-sa"
   }
 
   items = {
     controller = {
-      name         = "datafy-irsa-cluster"
+      role_name    = "datafy-irsa-cluster"
       cluster_name = "my-eks-cluster"
     }
     another = {
-      name         = "datafy-irsa-other"
+      role_name    = "datafy-irsa-other"
       cluster_name = "my-other-eks-cluster"
     }
   }
@@ -41,17 +41,17 @@ module "wrapper" {
   source = "../../wrappers/iam-role-for-datafy-controller-eks"
 
   defaults = {
-    namespace       = "default"
-    service_account = "datafy-controller-sa"
+    datafy_controller_namespace            = "default"
+    datafy_controller_service_account_name = "datafy-controller-sa"
   }
 
   items = {
     controller = {
-      name         = "datafy-irsa-cluster"
+      role_name    = "datafy-irsa-cluster"
       cluster_name = "my-eks-cluster"
     }
     another = {
-      name         = "datafy-irsa-other"
+      role_name    = "datafy-irsa-other"
       cluster_name = "my-other-eks-cluster"
     }
   }
