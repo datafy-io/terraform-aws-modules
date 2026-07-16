@@ -74,11 +74,11 @@ variable "regions" {
 
 variable "account_id" {
   type        = string
-  description = "Datafy account or organization ID."
+  description = "Your Datafy Account ID or Organization ID (Optional)."
 
   validation {
-    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$", var.account_id))
-    error_message = "Account ID must be a valid UUID."
+    condition     = length(trimspace(var.account_id)) == 0 || can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$", var.account_id))
+    error_message = "Account ID must be a valid UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)."
   }
 }
 
