@@ -59,7 +59,13 @@ For each module wrapper under `wrappers/<name>`:
 
 For each example under `examples/<name>`:
 
-1. The example must source `../../modules/<name>`.
+1. The example must reference the published registry source
+   `datafy-io/modules/aws//modules/<name>` with a `version` constraint, so it
+   documents real-world usage. In-repo validation still exercises the local
+   module code: the `terraform` GitHub workflow (`.github/workflows/terraform.yml`,
+   `inits` job) rewrites this registry source to `../../modules/<name>` and
+   strips the `version` before running `terraform init` on a copy of each
+   example.
 2. The example format and style should follow the closest existing
    example already present in this repository.
 3. The example must demonstrate all important supported input modes for
