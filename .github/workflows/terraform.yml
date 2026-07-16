@@ -46,7 +46,21 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Examples reference the published registry source
+          # (datafy-io/modules/aws//modules/<name>). That source is not
+          # available for the code in this branch, so init against a copy in
+          # which the registry source is rewritten to the local module path.
           for dir in examples/*/; do
             [ -d "$dir" ] || continue
-            terraform -chdir="${dir%/}" init -backend=false
+
+            tmp="$(mktemp -d)"
+            cp -r "$dir"/. "$tmp"/
+            # Point the registry source at the local modules and drop the
+            # version constraint (not allowed with local sources).
+            sed -i \
+              -e "s#datafy-io/modules/aws//modules/#${GITHUB_WORKSPACE}/modules/#g" \
+              -e "/^[[:space:]]*version[[:space:]]*=/d" \
+              "$tmp"/*.tf
+
+            terraform -chdir="$tmp" init -backend=false
           done
