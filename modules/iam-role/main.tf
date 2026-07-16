@@ -51,7 +51,7 @@ resource "aws_iam_role" "datafy" {
         Condition = {
           StringEquals = {
             "${local.oidc_provider_url}:aud" = "sts.amazonaws.com"
-            "${local.oidc_provider_url}:sub" = length(trimspace(var.account_id)) > 0 ? "datafy.io/${var.account_id}" : "datafy.io"
+            "${local.oidc_provider_url}:sub" = length(trimspace(var.account_id)) > 0 ? "datafy.io/${trimspace(var.account_id)}" : "datafy.io"
           }
         }
       }
