@@ -74,6 +74,7 @@ variable "regions" {
 
 variable "account_id" {
   type        = string
+  default     = ""
   description = "Your Datafy Account ID or Organization ID (Optional)."
 
   validation {
