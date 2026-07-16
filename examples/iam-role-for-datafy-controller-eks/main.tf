@@ -3,7 +3,8 @@ terraform {
 }
 
 module "irsa" {
-  source = "datafy-io/modules/aws//modules/iam-role-for-datafy-controller-eks"
+  source  = "datafy-io/modules/aws//modules/iam-role-for-datafy-controller-eks"
+  version = "~> 1.0"
 
   cluster_name                = "my-eks-cluster"
   datafy_controller_namespace = "datafy-agent"

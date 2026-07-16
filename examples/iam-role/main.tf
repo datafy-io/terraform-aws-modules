@@ -14,7 +14,8 @@ provider "aws" {
 }
 
 module "datafy_role_global" {
-  source = "datafy-io/modules/aws//modules/iam-role"
+  source  = "datafy-io/modules/aws//modules/iam-role"
+  version = "~> 1.0"
 
   account_id        = "123e4567-e89b-12d3-a456-426614174000"
   permissions_level = "AutoScaler"
@@ -22,7 +23,8 @@ module "datafy_role_global" {
 }
 
 module "datafy_role_regional" {
-  source = "datafy-io/modules/aws//modules/iam-role"
+  source  = "datafy-io/modules/aws//modules/iam-role"
+  version = "~> 1.0"
 
   account_id        = "123e4567-e89b-12d3-a456-426614174001"
   permissions_level = "AutoScaler"
