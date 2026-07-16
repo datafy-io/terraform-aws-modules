@@ -15,7 +15,7 @@ module "datafy_iam_role" {
 }
 ```
 
-`account_id` is optional. Provide your Datafy Account ID or Organization ID o scope the assume-role subject to `datafy.io/<account_id>`;
+`account_id` is optional. Provide your Datafy Account ID or Organization ID to scope the assume-role subject to `datafy.io/<account_id>`;
 leave it empty to use `datafy.io`.
 
 ## Outputs
