@@ -4,7 +4,7 @@ locals {
     StringEquals = {
       "aws:RequestedRegion" = var.regions
     }
-  } : null
+  } : {}
   role_version = try(
     [
       for m in lookup(jsondecode(file("${path.root}/.terraform/modules/modules.json")), "Modules", []) :
