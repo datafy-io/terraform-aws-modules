@@ -64,3 +64,26 @@ jobs:
 
             terraform -chdir="$tmp" init -backend=false
           done
+
+  tests:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.tf_version }}
+
+      - name: Terraform test all modules
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for dir in modules/*/; do
+            [ -d "$dir/tests" ] || continue
+
+            echo; echo "==> $$dir"
+            terraform -chdir="$dir" init -backend=false
+            terraform -chdir="$dir" test
+          done
