@@ -25,13 +25,16 @@ of the following:
    - `README.md`
 2. A matching wrapper exists at `wrappers/<name>`.
 3. A matching example exists at `examples/<name>`.
-4. Module, wrapper, example, and root README paths are consistent after
+4. Tests exist at `modules/<name>/tests/` and cover every `validation`
+   block in `variables.tf`.
+5. Module, wrapper, example, and root README paths are consistent after
    any rename.
-5. `terraform fmt -recursive` is clean.
-6. Each example supports `terraform init -backend=false`.
-7. Each example supports `terraform validate`.
-8. README content matches the actual module interface and current file
-   paths.
+6. `terraform fmt -recursive` is clean.
+7. Each example supports `terraform init -backend=false`.
+8. Each example supports `terraform validate`.
+9. `terraform test` passes for each module.
+10. README content matches the actual module interface and current file
+    paths.
 
 ## Wrapper Rules
 
@@ -74,6 +77,24 @@ For each example under `examples/<name>`:
    paths, the example should show each supported path.
 5. The example README must accurately describe what the example covers.
 
+## Test Rules
+
+For each module under `modules/<name>/tests`:
+
+1. Use `mock_provider "aws"` so tests never touch a real account.
+2. Mock `aws_iam_openid_connect_provider` with a syntactically valid
+   `arn`. The module splits the ARN on `oidc-provider/` to derive the
+   trust policy condition keys, so a generated mock value fails at plan
+   time.
+3. Use `override_data` for every data source the module reads.
+4. Give every `validation` block in `variables.tf` a case in
+   `validations.tftest.hcl` that must be rejected, plus the boundary
+   cases that must be accepted.
+5. Compare collection-typed attributes against `tolist([...])`,
+   `toset([...])` or `tomap({...})`. A bare literal fails the type check.
+6. Assert on decoded policy documents (`jsondecode(...)`), not on the
+   rendered JSON string.
+
 ## Reusable Guidance
 
 If completing a new module, use the repository-local skill:
@@ -88,7 +109,7 @@ example style.
 
 When reviewing new module changes, prioritize:
 
-1. Missing wrapper or missing example.
+1. Missing wrapper, missing example, or missing tests.
 2. README drift after rename or interface change.
 3. Example coverage gaps for supported options.
 4. Incorrect relative source paths.
@@ -112,11 +133,19 @@ Use these commands when checking repo consistency:
 
 ```bash
 terraform fmt -recursive
+terraform -chdir=modules/iam-role init -backend=false
+terraform -chdir=modules/iam-role test
+terraform -chdir=modules/iam-role-for-datafy-controller-eks init -backend=false
+terraform -chdir=modules/iam-role-for-datafy-controller-eks test
 terraform -chdir=examples/iam-role init -backend=false
 terraform -chdir=examples/iam-role validate
 terraform -chdir=examples/iam-role-for-datafy-controller-eks init -backend=false
 terraform -chdir=examples/iam-role-for-datafy-controller-eks validate
 ```
+
+Examples reference the published registry source, which is not available for
+unreleased code. To validate an example against the working tree, copy it and
+rewrite the source the way the `inits` workflow job does.
 
 If more examples are added, extend validation to each `examples/*`
 subdirectory.
