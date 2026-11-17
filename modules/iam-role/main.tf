@@ -30,7 +30,7 @@ resource "aws_iam_role" "datafy" {
   description = "Service Role for Datafy.io"
   tags = merge(
     {
-      "datafy:account:id"   = var.account_id
+      "datafy:account:id"   = trimspace(var.account_id)
       "datafy:role:scope"   = var.permissions_scope
       "datafy:role:level"   = var.permissions_level
       "datafy:role:version" = local.role_version
