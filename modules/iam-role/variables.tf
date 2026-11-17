@@ -62,8 +62,6 @@ variable "regions" {
         "sa-east-1",
         "us-east-1",
         "us-east-2",
-        "us-gov-east-1",
-        "us-gov-west-1",
         "us-west-1",
         "us-west-2"
       ], r)

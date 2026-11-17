@@ -120,12 +120,23 @@ run "rejects_non_https_oidc_url" {
   expect_failures = [var.oidc_url]
 }
 
-run "accepts_gov_cloud_regions" {
+run "rejects_gov_cloud_regions" {
   command = plan
 
   variables {
     permissions_scope = "Regional"
-    regions           = ["us-gov-east-1", "us-gov-west-1", "cn-north-1"]
+    regions           = ["us-gov-east-1", "us-gov-west-1"]
+  }
+
+  expect_failures = [var.regions]
+}
+
+run "accepts_china_regions" {
+  command = plan
+
+  variables {
+    permissions_scope = "Regional"
+    regions           = ["cn-north-1", "cn-northwest-1"]
   }
 }
 
