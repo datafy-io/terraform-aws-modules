@@ -49,7 +49,7 @@ resource "aws_iam_role" "datafy" {
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
-          StringEquals = {
+          StringEqualsIgnoreCase = {
             "${local.oidc_provider_url}:aud" = "sts.amazonaws.com"
             "${local.oidc_provider_url}:sub" = "datafy.io/${trimspace(var.account_id)}"
           }
