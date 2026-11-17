@@ -1,3 +1,5 @@
+data "aws_partition" "current" {}
+
 locals {
   oidc_provider_url = split("oidc-provider/", aws_iam_openid_connect_provider.datafy.arn)[1]
   regional_condition = var.permissions_scope == "Regional" ? {
@@ -30,7 +32,7 @@ resource "aws_iam_role" "datafy" {
   description = "Service Role for Datafy.io"
   tags = merge(
     {
-      "datafy:account:id"   = var.account_id
+      "datafy:account:id"   = trimspace(var.account_id)
       "datafy:role:scope"   = var.permissions_scope
       "datafy:role:level"   = var.permissions_level
       "datafy:role:version" = local.role_version
@@ -51,7 +53,7 @@ resource "aws_iam_role" "datafy" {
         Condition = {
           StringEquals = {
             "${local.oidc_provider_url}:aud" = "sts.amazonaws.com"
-            "${local.oidc_provider_url}:sub" = length(trimspace(var.account_id)) > 0 ? "datafy.io/${trimspace(var.account_id)}" : "datafy.io"
+            "${local.oidc_provider_url}:sub" = "datafy.io/${trimspace(var.account_id)}"
           }
         }
       }
@@ -116,9 +118,9 @@ resource "aws_iam_role_policy" "datafy" {
           "ec2:DeleteTags"
         ]
         Resource = [
-          "arn:aws:ec2:*:*:instance/*",
-          "arn:aws:ec2:*:*:volume/*",
-          "arn:aws:ec2:*:*:snapshot/*"
+          "arn:${data.aws_partition.current.partition}:ec2:*:*:instance/*",
+          "arn:${data.aws_partition.current.partition}:ec2:*:*:volume/*",
+          "arn:${data.aws_partition.current.partition}:ec2:*:*:snapshot/*"
         ]
         Condition = local.regional_condition
       },
@@ -132,7 +134,7 @@ resource "aws_iam_role_policy" "datafy" {
           "kms:ReEncryptTo"
         ]
         Resource = [
-          "arn:aws:kms:*:*:key/*"
+          "arn:${data.aws_partition.current.partition}:kms:*:*:key/*"
         ]
         Condition = local.regional_condition
       }

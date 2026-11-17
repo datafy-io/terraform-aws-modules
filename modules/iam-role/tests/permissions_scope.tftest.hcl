@@ -9,6 +9,10 @@ mock_provider "aws" {
   }
 }
 
+variables {
+  account_id = "123e4567-e89b-12d3-a456-426614174000"
+}
+
 run "global_scope_has_no_region_condition" {
   variables {
     permissions_scope = "Global"
