@@ -3,6 +3,10 @@
 
 mock_provider "aws" {}
 
+variables {
+  account_id = "123e4567-e89b-12d3-a456-426614174000"
+}
+
 run "rejects_unknown_permissions_level" {
   command = plan
 
@@ -66,6 +70,36 @@ run "rejects_non_uuid_account_id" {
   expect_failures = [var.account_id]
 }
 
+run "rejects_empty_account_id" {
+  command = plan
+
+  variables {
+    account_id = ""
+  }
+
+  expect_failures = [var.account_id]
+}
+
+run "rejects_blank_account_id" {
+  command = plan
+
+  variables {
+    account_id = "   "
+  }
+
+  expect_failures = [var.account_id]
+}
+
+run "rejects_null_account_id" {
+  command = plan
+
+  variables {
+    account_id = null
+  }
+
+  expect_failures = [var.account_id]
+}
+
 run "rejects_empty_role_name" {
   command = plan
 
@@ -95,10 +129,10 @@ run "accepts_gov_cloud_regions" {
   }
 }
 
-run "accepts_blank_account_id" {
+run "accepts_padded_account_id" {
   command = plan
 
   variables {
-    account_id = "   "
+    account_id = "  123e4567-e89b-12d3-a456-426614174000  "
   }
 }

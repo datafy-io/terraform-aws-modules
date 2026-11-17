@@ -2,7 +2,7 @@ module "wrapper" {
   source   = "../../modules/iam-role"
   for_each = var.items
 
-  account_id        = try(each.value.account_id, var.defaults.account_id)
+  account_id        = try(each.value.account_id, var.defaults.account_id, null)
   role_name         = try(each.value.role_name, var.defaults.role_name, "DatafyIORole")
   oidc_url          = try(each.value.oidc_url, var.defaults.oidc_url, "https://oidc.datafy.io")
   permissions_level = try(each.value.permissions_level, var.defaults.permissions_level, "AutoScaler")

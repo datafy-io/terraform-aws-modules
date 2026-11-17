@@ -1,5 +1,5 @@
-# The trust policy binds the role to a Datafy OIDC subject. account_id narrows
-# that subject from the whole platform to a single account or organization.
+# The trust policy binds the role to the Datafy OIDC subject of a single
+# account or organization, datafy.io/<account_id>.
 
 mock_provider "aws" {
   mock_resource "aws_iam_openid_connect_provider" {
@@ -9,26 +9,11 @@ mock_provider "aws" {
   }
 }
 
-run "without_account_id" {
-  variables {
-    account_id = ""
-  }
-
-  assert {
-    condition     = jsondecode(aws_iam_role.datafy.assume_role_policy).Statement[0].Condition.StringEquals["oidc.datafy.io:sub"] == "datafy.io"
-    error_message = "An empty account_id should trust the platform-wide datafy.io subject"
-  }
-
-  assert {
-    condition     = aws_iam_role.datafy.tags["datafy:account:id"] == ""
-    error_message = "The account id tag should be empty when no account_id is given"
-  }
+variables {
+  account_id = "123e4567-e89b-12d3-a456-426614174000"
 }
 
 run "with_account_id" {
-  variables {
-    account_id = "123e4567-e89b-12d3-a456-426614174000"
-  }
 
   assert {
     condition     = jsondecode(aws_iam_role.datafy.assume_role_policy).Statement[0].Condition.StringEquals["oidc.datafy.io:sub"] == "datafy.io/123e4567-e89b-12d3-a456-426614174000"
